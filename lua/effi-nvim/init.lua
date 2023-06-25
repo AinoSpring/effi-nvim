@@ -28,11 +28,14 @@ function M.load()
   print("Loaded " .. Data["project"]["name"]);
 end
 
-function M.run()
+function M.run(profile)
   Output = {};
   vim.fn.jobstop(Job);
+  if Data[profile] == nil then
+    print("Profile does not exist");
+  end
   Job = vim.fn.jobstart(
-    Data["project"]["run"],
+    Data[profile]["run"],
     {
       on_stdout = function (jobid, data, event)
         table.insert(Output, data[1]);
@@ -50,7 +53,6 @@ end
 
 function M.stop()
   vim.fn.jobstop(Job);
-  print("Exited");
 end
 
 function M.print()
