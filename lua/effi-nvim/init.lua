@@ -18,14 +18,18 @@ local function file_exists(name)
 	end
 end
 
-function M.load()
+function M.load(hide)
 	ConfigPath = vim.fn.getcwd() .. "/.effi"
 	if not file_exists(ConfigPath) then
-		print("Could not load project")
+		if not hide then
+			print("Could not find .effi file")
+		end
 		return
 	end
 	Data = lip.load(ConfigPath)
-	print("Loaded " .. Data["project"]["name"])
+	if not hide then
+		print("Loaded " .. Data["project"]["name"])
+	end
 end
 
 function M.run(profile)
